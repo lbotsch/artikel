@@ -1,0 +1,296 @@
+
+% File: main.tex
+% This is the main file of your article. Begin writing your article after the comment 'Actual content starts here'!
+
+\input{header.tex}
+\title{Extrema einer Funktion}
+\hypersetup
+{
+    pdfauthor = {Lukas Botsch},
+    pdfsubject = {Extremalstellen und Extrema einer Funktion finden},
+    pdftitle = {Extrema einer Funktion},
+    pdfkeywords = {Extremum, Funktion, Analysis, Ableitung}
+}
+
+\begin{document}
+\maketitle{}
+
+% Ein paar nützliche Befehle:
+%
+% \gnuplot{name}{Titel}{label}  Fügt das gnuplot 'figures/[name].plot' mit dem gegebenen title und label als Figur ein
+% 
+% \begin{align}
+%     % Integral
+%     \int_a^b f(x) \,\mathrm{d}x\\
+%
+%     % Ableitung
+%     \d{f}{x}
+%
+%     % Zweite Ableitung
+%     \dd{f}{x}
+%
+%     % Partielle Ableitung
+%     \pd{f}{x}
+%
+%     % Zweite partielle Ableitung
+%     \pdd{f}{x}
+%
+%     % Nabla notation von Gradient, Divergenz und Krümmung
+%     \grad{f} \div{f} \curl{f}
+% \end{align}
+%
+% \begin{thm}[Titel]
+%     Ein Satz ...
+% \end{thm}
+% \begin{beweis}
+%     Der Beweis zum Satz ...
+%     \qed % setzt ein rechteck ans Ende der Zeile
+% \end{beweis}
+
+% Actual content starts here
+
+\section{Welche Art von Problemen versuchen wir hier zu lösen?}
+
+Bei gegebener Funktion $f: U \subset \mathbb{R}^n \rightarrow \mathbb{R}, y = f(x)$ suchen wir Werte $x_{min} \in U$,
+so dass für jedes $x$ aus einer Umgebung von $x_{min}$ gilt: $f_{min} := f(x_{min}) \leq f(x)$, bzw. $x_{max} \in U$,
+so dass für jedes $x$ aus einer Umgebung von $x_{max}$ gilt: $f_{max} := f(x_{max}) \geq f(x)$. \\
+$f_{min}$ nennen wir \textit{relatives Minimum}, $f_{max}$ \textit{relatives Maximum} von f.
+
+Wenn sogar $f_{min} \leq f(x)$ für {\it alle} $x\in U$ gilt, handelt es sich um ein \textit{absolutes} Minimum.\\
+Wenn $f_{max} \geq f(x)$ für {\it alle} $x\in U$ gilt, handelt es sich um ein \textit{absolutes} Maximum.
+
+\subsection*{Beispiel}
+
+Die Funktion $f: \mathbb{R} \rightarrow \mathbb{R}, f(x) = x^2$ nimmt an der stelle $x_{min} = 0$ ein absolutes Minimum an.
+\gnuplot{bsp_1}{Minimum von $f(x) = x^2$ an der stelle $x = 0$}{fig:bsp_1}
+
+\section{Finden der Extremalstellen und -werte einer Funktion einer Veränderlichen}
+
+Die erste Frage, die wir uns stellen sollten, ist die der Existenz von Extremalstellen. Unter welchen Bedingungen können wir 
+Aussagen darüber treffen, ob die Funktion $f(x)$ ein Minimum, bzw. Maximum annimmt?
+
+\subsection{Existenzsatz von Extremalstellen}
+\begin{thm}
+    Sei $f: I = [a,b] \rightarrow \mathbb{R}$ stetig und sei $I$ ein \textit{kompaktes} Intervall (d.h. {\it abgeschlossen} und
+    {\it beschränkt}). Dann ist $f$ in $I$ beschränkt und nimmt ihr Minimum und Maximum an. Dabei können diese auch in den
+    Randstellen $a, b$ angenommen werden.
+\end{thm}
+\begin{beweis}
+    Sei $\eta = \mathrm{sup}f(I)$ und $\alpha_n = \eta - \frac{1}{n}$ bzw. $\alpha_n = n$, falls $\eta = \infty$ ist. Für jedes
+    $n$ gibt es ein $x_n\in I$ mit $f(x_n) > \alpha_n$. Es strebt dann $f(x_n)\rightarrow\eta$. Die Folge $(x_n)$ besitzt eine
+    konvergente Teilfolge; ihr Limes sei $x^\ast$. Die zugehörige Teilfolge von $(f(x_n))$ konvergiert aufgrund der Stetigkeit
+    von $f$ gegen $f(x^\ast)$, andererseits gegen $\eta$. Also ist $\eta = f(x^\ast) < \infty$. Beim Infimum wird analog verfahren.
+    \qed
+\end{beweis}
+
+Wir wollen uns nun Kriterien für solche Extremalstellen überlegen.
+
+\subsection{Bedingung für eine Extremalstelle}
+
+Wenn $f$ an der Stelle $a < x_0 < b$ ein Minimum annimmt, so folgt aus der Definition, dass sich an der Stelle $x_0$ die Richtung
+der Kurve von $f$ ändern muss. Es ist nämlich $f(x_0) \leq f(x)$ für alle $x$ aus einer Umgebung von $x_0$. Also muss an dieser
+Stelle die Ableitung von $f$ gleich Null sein: $f'(x_0) = 0$. Die selbe Überlegung gilt auch für das Maximum.
+
+Damit haben wir eine notwendige Bedingung für eine Extremalstelle gefunden. Suchen wir also alle Werte $x_i\in I$, für die gilt
+$f'(x_i) = 0$. Nun müssen wir nur noch prüfen, ob $f$ an diesen Stellen ein Minimum, bzw. Maximum annimmt.
+
+\subsection{Hinreichende Bedingungen}
+
+Ist $f$ $n+1$-mal differenzierbar, und ist $f^{(2)}(x_0) = f^{(3)}(x_0) = \cdots = f^{(n)}(x_0) = 0$ und $f^{(n+1)}(x_0) \neq 0$,
+dann folgt:
+\begin{align*}
+    & \text{falls $n$ ungerade ist und $f^{(n+1)}(x_0) < 0$,} & \text{f nimmt in $x_0$ ein lokales Maximum an,} \\
+    & \text{falls $n$ ungerade ist und $f^{(n+1)}(x_0) > 0$,} & \text{f nimmt in $x_0$ ein lokales Minimum an,} \\
+    & \text{falls $n$ gerade ist,} & \text{$f$ nimmt in $x_0$ kein Extremum an.}
+\end{align*}
+Für $n=1$ ergibt sich folgendes: Ist $f'(x_0) = 0$ und $f''(x_0) > 0$ (bzw. $f''(x_0) < 0$), so nimmt $f$ an der Stelle $x_0$
+ein Minimum (bzw. Maximum) an.
+
+Ein weiteres hinreichendes Kriterium folgt aus dem Mittelwertsatz: Seien $\alpha,\beta \in I$ und $\alpha < x_0 < \beta$ und gilt
+$f'(x) = 0 \Leftrightarrow x = x_0$ für alle $x\in [\alpha,\beta]$ (also ist die einzige Nullstelle der Ableitung in $[a,b]$ $x_0$),
+und gilt $f(\alpha) > f(x_0)$ (bzw. $f(\alpha) < f(x_0)$) sowie $f(\beta) > f(x_0)$ (bzw. $f(\beta) < f(x_0)$), so nimmt $f$ in
+$x_0$ ein Minimum (bzw. Maximum) an.
+
+\subsection{Beispiele}
+
+\begin{enumerate}
+    \item $f(x) = x^2 + 3$. $f'(x) = 2x = 0 \Leftrightarrow x_0 = 0$. $f''(x) = 2 > 0$. Also ist $f(x_0) = 3$ ein lokales Minimum.
+    \item $f(x) = x^4 + 1$. $f'(x) = 4x^3 = 0 \Leftrightarrow x_0 = 0$. $f''(x_0) = f^{(3)}(x_0) = 0$. $f^{(4)}(x_0) = 24 > 0$. Also
+        nimmt $f$ an der Stelle $x_0 = 0$ ein lokales Minimum an. Und zwar $f(x_0) = 1$.
+\end{enumerate}
+
+\section{Finden der Extremalstellen und -werte einer Funktion mehrerer Veränderlichen}
+
+Analog zum eindimensionalen Fall, suchen wir ein Existenzkriterium und Bedingungen für eine Extremalstelle einer Funktion
+$f: U \subset \mathbb{R}^n \rightarrow \mathbb{R}$.
+
+\subsection{Existenzsatz}
+
+Der Existenzsatz aus dem eindimensionalen Fall lässt sich auf den mehrdimensionalen Fall übertragen:
+Ist $U$ eine kompakte (d.h. abgeschlossene und beschränkte) Menge und ist $f$ auf $U$ stetig, so nimmt $f$ in $U$
+ihr Minimum und Maximum an. Dabei können die Extremalstellen in den Randpunkten von $U$ liegen.
+
+\subsection{Notwendige Bedingung für ein Extremum}
+
+Existiert $f$ in einer Umgebung von $\xi$, existiert $\mathrm{grad} f(\xi)$ und hat $f$ an der Stelle $\xi$ ein lokales
+Extremum, so ist $\mathrm{grad} f(\xi) = 0$. Man nennt die Punkte $\xi$ mit $\mathrm{grad} f(\xi) = 0$ {\it stationäre}
+oder {\it kritische} Punkte von $f$.
+
+\begin{beweis}
+    Da die Funktion $g(t) = f(t, \xi_2, \cdots, \xi_n)$ an der Stelle $t = \xi_1$ ein lokales Extremum hat, ist $g'(\xi_1) = 
+    \pd{f}{x_1}(\xi) = 0$ nach dem Kriterium im eindimensionalen Fall. Entsprechend für die anderen Ableitungen. \qed
+\end{beweis}
+
+Analog zum eindimensionalen Fall, suchen wir nun noch hinreichende Kriterien, um die Suche nach den Extremalstellen zu vereinfachen.
+
+\subsection{Hinreichende Kriterien für ein Extremum}
+
+Sei $G\subset U$ offen, $f$ zweimal differenzierbar auf $G$ ($f\in C^2(G)$), $\xi \in G$ und $\mathrm{grad} f(\xi) = 0$.
+Dann lässt sich die Frage, ob $f$ an der Stelle $\xi$ ein Extremum besitzt, anhand der Hesse-Matrix
+\[ H_f(\xi) = \left(\frac{\partial^2 f}{\partial x_i \, \partial x_j}\right)_{i,j = 1, \cdots, n} =
+    \left( \begin{array}{cccc}
+        \ppd{f}{x_1}{x_1} & \ppd{f}{x_1}{x_2} & \cdots & \ppd{f}{x_1}{x_n} \\
+        \ppd{f}{x_2}{x_1} & \ppd{f}{x_2}{x_2} & \cdots & \ppd{f}{x_2}{x_n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \ppd{f}{x_n}{x_1} & \ppd{f}{x_n}{x_2} & \cdots & \ppd{f}{x_n}{x_n}
+    \end{array} \right) \]
+folgendermaßen beantworten:
+
+\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}llcl}
+    $H_f(\xi)$ & positiv definit & $\Rightarrow$ & lokales Minimum im strengen Sinn, \\
+               & negativ definit & $\Rightarrow$ & lokales Maximum im strengen Sinn, \\
+               & indefinit       & $\Rightarrow$ & kein Extremum.
+\end{tabular*}
+
+Ist $H_f(\xi)$ semi-definit, so müssen weitere Untersuchungen betrieben werden um eine Aussage treffen zu können.
+
+Die Definitheit der Hesse-Matrix ist folgendermaßen definiert:
+
+\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}lll}
+    $H_f$ ist & positiv definit,     & wenn $x^\top H_f x > 0$ für alle $x \neq 0$, \\
+              & positiv semidefinit, & wenn $x^\top H_f x \geq 0$ für alle $x$, \\
+              & negativ definit,     & wenn $x^\top H_f x < 0$ für alle $x \neq 0$, \\
+              & negativ semidefinit, & wenn $x^\top H_f x \leq 0$ für alle $x$, \\
+              & indefinit,           & wenn keins der oberen zutrifft.
+\end{tabular*}
+
+Im zweidimensionalen Fall $f: G\subset\mathbb{R}^2\rightarrow\mathbb{R}, z=f(x, y)$ lässt sich die Definitheit der Hesse-Matrix
+einfacher anhand der Diskriminante $D = f_{xx}f_{yy} - f_{xy}^2$ feststellen:
+
+\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}lll}
+    $D > 0 \Rightarrow H_f$ & positiv definit, & falls $f_{xx} > 0$, \\
+                            & negativ definit, & falls $f_{xx} < 0$, \\
+    $D = 0 \Rightarrow H_f$ & positiv semidefinit, & falls $f_{xx} > 0$ oder $f_{xx} = 0$ und $f_{yy}\geq0$, \\
+                            & negativ semidefinit, & falls $f_{xx} < 0$ oder $f_{xx} = 0$ und $f_{yy}\leq0$, \\
+    $D < 0 \Rightarrow H_f$ & indefinit. &
+\end{tabular*}
+
+\subsection{Beispiel}
+
+$f(x,y) = e^{xy} + x^2 + 2y^2$. $f_x = ye^{xy} + 2x$, $f_y = xe^{xy} + 4y$, \\
+$f_{xx} = y^2e^{xy} + 2$, $x_{yy} = x^2e^{xy} + 4$, $f_{xy} = e^{xy}(1+y^2)$ \\
+Die Diskriminante der Hesse-Matrix $D = f_{xx}f_{yy} - f_{xy}^2 = (y^2e^{xy} + 2)(x^2e^{xy} + 4) - e^{xy}(1+y^2)$ \\
+Offenbar ist der Punkt $(0,0)$ ein stationärer Punkt und $D(0,0) = 7 > 0$. Also nimmt $f$ in $(0,0)$ ein lokales
+Minimum an.
+
+\gnuplot{bsp_2}{$f(x,y) = e^{xy} + x^2 + 2y^2$}{fig:bsp_2}
+
+\section{Extremum mit Nebenbedingungen}
+
+Wir werden uns nun mit dem Extremalproblem im mehrdimensionalen Fall beschäftigen, in dem weitere Bedingungen an die Variablen
+$x = (x_1, \cdots, x_n)$ gestellt sind, sogenannte {\it Nebenbedingungen}.
+
+Gegeben seien eine Funktion $f$ und ein m-Tupel von Funktionen $\phi = (\phi_1, \cdots, \phi_m)$ auf $G\subset\mathbb{R}^n, m<n$.
+$\mathcal{F}_\phi = \left\{x\in\mathbb{R}^n : \phi_j(x) = 0, j=1,\cdots,m \right\}$.
+
+Wir suchen ein relatives Extremum bezüglich der Nebenbedingung $\phi = 0$.
+
+Die notwendige Bedingung für ein Extremum lautet hier:\\
+Ist $x_0$ relatives Extremum für $f$ bezüglich der Nebenbedingung $\phi = 0$, dann existiert $\lambda\in\mathbb{R}^m$ mit
+\[ (\mathrm{grad}f)(x_0) = (\mathrm{grad}(\lambda\cdot\phi))(x_0) \]
+
+Setzen wir nun $F = f - \lambda_1\phi_1 - \lambda_2\phi_2 - \cdots - \lambda_m\phi_m, \lambda_1,\cdots,\lambda_m\in\mathbb{R}$.
+Dann ist 
+\[ \pd{F}{x_j} = \pd{f}{x_j} - \lambda_1\pd{\phi_1}{x_j} - \cdots - \lambda_m\pd{\phi_m}{x_j}
+    = \pd{f}{x_j} - \pd{(\lambda_1\phi_1 + \cdots + \lambda_m\phi_m)}{x_j} = \pd{f}{x_j} - \pd{(\lambda\phi)}{x_j} \]
+D.h. die Bedingung $\pd{F}{x_j} = 0, j = 1,\cdots,m$ sind äquivalent zu $\mathrm{grad}f = \mathrm{grad}(\lambda\phi)$.
+
+Also haben wir $n$ Gleichungen
+
+\begin{equation}
+    \pd{F}{x_j} = 0 \,\, , j = 1, \cdots, n
+    \label{eq:nb1}
+\end{equation}
+
+und $m$ Gleichungen
+
+\begin{equation}
+    \phi_1 = 0, \cdots, \phi_m = 0
+    \label{eq:nb2}
+\end{equation}
+
+für die $n+m$ Variablen $x_1, \cdots, x_n, \lambda_1, \cdots, \lambda_m$.\\
+$\lambda_1, \cdots, \lambda_m$ heißen {\it Lagrange Multiplikatoren}.
+
+\subsection{Beispiel}
+
+$f(x_1, x_2, x_3) = x_1^2 + x_2^2 + x_3^2 = ||x||^2$ \\
+$\phi_1(x_1, x_2, x_3) = x_1^2 + x_2^2 - 1$, $\phi_2(x_1, x_2, x_3) = x_1 + x_2 + x_3 - 1$
+
+$\mathrm{grad}f = (2x_1, 2x_2, 2x_3), \mathrm{grad}\phi_1 = (2x_1, 2x_2, 0), \mathrm{grad}\phi_2 = (1, 1, 1)$ \\
+Lösen wir das System:
+
+\begin{align*}
+    \left. \begin{array}{r}
+        2x_1 = \lambda_1 2 x_1 + \lambda_2 \\
+        2x_1 = \lambda_1 2 x_1 + \lambda_2 \\
+        2x_1 = \lambda_1 2 x_1 + \lambda_2
+    \end{array} \right) \leadsto \eqref{eq:nb1}
+    \\ \\
+    \left. \begin{array}{r}
+        x_1^2 + x_2^2 = 1 \\
+        x_1 + x_2 + x_3 = 1
+    \end{array} \right) \leadsto \eqref{eq:nb2}
+\end{align*}
+
+\begin{align}
+    \lambda_2 = 2x_3 \notag \\
+    \leadsto (1-\lambda_1)x_1 = x_3, (1-\lambda_1)x_2 = x_3 \label{eq:nb3}
+\end{align}
+
+\begin{align*}
+    \text{\underline{Fall 1:} } & \lambda_1 = 1 \leadsto x_3 = 0 \\
+        & x_1 + x_2 = 1, x_2 = 1-x_1 \\
+        & x_1^2 + (1-x_1)^2 = 1 \leadsto 2x_1(x_1 - 1) = 0 \\
+        & \text{Zwei Lösungen: } x_1 = (1, 0, 0), x_2 = (0, 1, 0) \\
+    \text{\underline{Fall 2:} } & \lambda_1 \neq 1 \\
+        & \eqref{eq:nb3} \leadsto (1-\lambda_1)(x_1-x_2) = 0, \text{Weil $\lambda_1\neq1$ folgt $x_1 = x_2$} \\
+        & x_1^2 + x_2^2 = 2x_1^2 = 1, x_1 = \pm\frac{1}{\sqrt{2}}, x_3 = 1-x_1-x_2 = 1\mp\frac{2}{\sqrt{2}} = 1\mp\sqrt{2} \\
+        & \text{Zwei Lösungen: } x_3 = (\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}, 1-\sqrt{2}),
+            x_4 = (-\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}, 1+\sqrt{2}) \\
+\end{align*}
+
+Wir haben also vier Punkte, die die notwendige Bedingung für relative Extrema unter Nebenbedingungen erfüllt.
+\begin{align*}
+    & f(x_1) = f(x_2) = 1 \\
+    & f(x_3) = \frac{1}{2} + \frac{1}{2} + (1 - \sqrt{2})^2 = 4 - 2\sqrt{2} \\
+    & f(x_4) = \frac{1}{2} + \frac{1}{2} + (1 + \sqrt{2})^2 = 4 + 2\sqrt{2}
+\end{align*}
+
+f ist eine stetige Funktion auf $\mathcal{F}_\phi$. $\mathcal{F}_\phi$ ist eine abgeschlossene, beschränkte Menge im $\mathbb{R}^3$,
+also ist $\mathcal{F}_\phi$ kompakt. Daher besitzt $f$ auf der Menge $\mathcal{F}_\phi$ ein Maximum und ein Minimum. Diese sind dann
+auch relative Maxima und Minima.
+
+\begin{align*}
+    & \text{Min}f = \text{Min} \{f(x_1), f(x_2), f(x_3), f(x_4)\} = 1 \\
+    & \text{Max}f = \text{Max} \{f(x_1), f(x_2), f(x_3), f(x_4)\} = 4 + 2\sqrt{2}
+\end{align*}
+
+\section{Quellen}
+\begin{itemize}
+    \item W. Walter, {\it Analysis 1}, 7. Auflage, Springer Berlin, ISBN 3-540-20388-5
+    \item W. Walter, {\it Analysis 2}, 5. erw. Auflage, Springer Berlin, ISBN 3-540-42953-1
+\end{itemize}
+
+% Actual content ends here
+\end{document}

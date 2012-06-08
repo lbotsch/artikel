@@ -1,0 +1,45 @@
+# ATTENTION: Your gnuplot files must end in .plot for the build system to find them!!!
+
+# This sets the terminal to latex and sets the size
+set term epslatex size 8.89cm,6.65cm color colortext
+set output "plot1.tex"
+
+# Line width of the axes
+set border linewidth 1.5
+
+# Define line styles
+set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2
+set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2
+set style line 3 linecolor rgb '#d02090' linetype 1 linewidth 2
+
+# Position the legend
+#set key at 6cm,0.6cm
+
+# Define Axes labels
+#set xlabel '$x$'
+#set ylabel '$y$'
+set format '$%g$'
+
+# Define Axes ranges
+set xrange [0:5]
+set yrange [-2:2]
+
+# Axes tics
+#set xtics ('$a$' 1, '$b$' 2) nomirror
+#set ytics ('$\alpha$' 1, '$\beta$' 2) nomirror
+#set tics scale 0.5
+
+# Define Functions
+
+# Use cut to cut a function to a certain frame (eg. f(x)*cut(x, 1, 4) will cut f(x) to values of x in [1,4]
+cut(x,x1,x2) = ((x >= x1 && x <= x2) ? 1.0 : 1/0)
+
+f(x) = x**2
+g(x) = cos(x)
+h(x) = sin(x)
+
+# Plot
+plot \
+    f(x) title '$y_1(x) = x^2$' with lines linestyle 1, \
+    g(x) title '$y_2(x) = cos(x)$' with lines linestyle 2, \
+    h(x) title '$y_3(x) = sin(x)$' with lines linestyle 3

@@ -1,0 +1,184 @@
+%        File: main.tex
+%
+\input{header.tex}
+\title{Variationsprobleme}
+\hypersetup
+{
+    pdfauthor = {Lukas Botsch},
+    pdfsubject = {Variationsprobleme},
+    pdftitle = {Variationsprobleme},
+    pdfkeywords = {DGL, Differentialgleichung, Euler-Lagrange Gleichung, Variationsproblem, Variationsrechnung, Extremalproblem}
+}
+
+\begin{document}
+
+\maketitle{}
+
+% Actual content starts here
+\section{Welche Art von Problemen versuchen wir hier zu lösen?}
+Das sogenannte Variationsproblem (VP)
+\begin{equation}
+    S[y] := \integral{a}{b}{L(x, y(x), y'(x))}{x} \rightarrow \mathrm{ minimal} \label{eq:vp}
+\end{equation}
+mit gegebener Funktion $L = L(x, y, p)$ (\textit{Lagrangefunktion}), wobei $y=y(x)$ alle möglichen
+Funktionen $y \in C^{1}([a,b])$ mit $y(a) = \alpha$, $y(b) = \beta$ durchläuft,
+($\alpha, \beta \in \mathbb{R}$ gegeben).
+
+\subsection*{Beispiel 1}
+Problem der kürzesten Entfernung zwischen zwei gegebenen Punkten $(a, \alpha)$ und $(b, \beta)$
+
+\gnuplot{bsp_1}{Wege zwischen zwei Punkten}{graph:bsp_1}
+
+Die Länge einer Kurve von $(a, \alpha)$ nach $(b, \beta)$, gegeben durch $y=y(x), y \in C^1([a,b])$ ist:
+\begin{equation}
+    \mathcal{L}[y] = \integral{a}{b}{\sqrt{(y(x))^2 + 1}}{x}
+\end{equation}
+
+Wir suchen also die Lösung des Variationsproblems (VP) mit $L = \sqrt{1 + p^{2}}$.
+
+\subsection*{Beispiel 2}
+Das Hamiltonsche Prinzip der klassischen, nichtrelativistischen Mechanik (HP)
+
+Setze $L = T - U$ (kinetische Energie - potentielle Energie).
+
+Z.B. bei eindimensionaler Bewegung eines Massenpunktes im ortsabhängigen Kraftfeld $f=f(y)$:
+\[ L = \frac{m}{2}v^2 - U(y) = \frac{m}{2}(\dot{y})^2 - U(y) , U = - \integral{}{}{f(y)}{y} \]
+Unter allen möglichen Wegen des Teilchens von $(t_{0}, \alpha)$ nach $(t_{1}, \beta)$ ist
+derjenige Weg $y=y(t)$ gesucht, so dass das \textit{Wirkungsintegral}
+\begin{equation}
+    S[y] = \integral{t_{0}}{t_{1}}{L}{t} = \integral{t_{0}}{t_{1}}{\left(\frac{m}{2}(\dot{y}(t))^{2} - U(y(t))\right)}{t}
+\end{equation}
+minimal wird.
+
+Das heißt, die Natur \textit{geizt} mit einer Größe der Dimension \textit{Energie x Zeit}, genauer mit der
+physikalischen Größe \textit{Wirkung}.
+
+\section{Lösen des Variationsproblems (VP)}
+
+In \eqref{eq:vp} vermittelt $\mathrm{S}$ eine Abbildung des affinen Unterraums
+\[ V := \left\{y\in C^2([a,b]) \mid y(a) = \alpha, y(b) = \beta \right\} \]
+nach $\mathbb{R}$, d.h. S ist ein \textit{Funktional} $S: V\rightarrow\mathbb{R}$.
+
+Wir führen nun \eqref{eq:vp} auf die Minimierung einer reellen Funktion zurück. Dazu nehmen wir an:
+$y_0\in V$ sei eine Lösung von \eqref{eq:vp}, d.h.
+\begin{equation}
+    S[y_0] \leq S[y], \forall y\in V
+\end{equation}
+($y_0$ heißt dann \textit{Minimalfunktion} zum Variationsproblem \eqref{eq:vp}).
+
+
+Für die Herleitung einer \textit{notwendigen} Bedingung von $y_0$ sei
+$\phi\in V_0 = \left\{y\in C^2([a,b]) \mid y(a) = 0, y(b) = 0 \right\}$. Dann ist
+$y_\eta = y_0 + \eta\phi, \eta\in(-\eta_0, \eta_0), y_\eta \in V \Rightarrow S[y_0] \leq S[y_\eta] =: h(\eta)$.
+Hier ist $h$ eine reelle Funktion $h: (-\eta_0, \eta_0) \rightarrow \mathbb{R}$, mit
+\begin{equation}
+h(0) \leq h(\eta)
+\end{equation}
+Daraus folgt, dass $h$ in $\eta = 0$ ein Minimum hat, also $h'(0) = 0$ gilt.
+
+Berechnen wir nun $h'(\eta)$:
+
+\begin{align}
+    h'(\eta) = \d{}{\eta} S[y_\eta] &= \d{}{\eta} \left(
+        \integral{a}{b}{L(x, y_0(x) + \eta \phi(x), y_0'(x) + \eta \phi'(x))}{x}\right) \notag \\
+    &= \integral{a}{b}{ \d{}{\eta}\left(L(x, y_0(x) + \eta \phi(x), y_0'(x) + \eta \phi'(x))\right)}{x}
+        \,\,(\mathrm{falls} L\in C^1(\mathbb{R}^3)) \notag \\
+    &= \integral{a}{b}{\left( L_y \d{y_\eta}{\eta} + L_p \d{y_\eta'}{\eta}\right)}{x} \notag \\
+    &= \begin{aligned}
+            \integral{a}{b}{( & L_y(x, y_0(x) + \eta \phi(x), y_0'(x) + \eta \phi'(x)) \phi(x) \\
+            & + L_p(x, y_0(x) + \eta \phi(x), y_0'(x) + \eta \phi'(x)) \phi'(x))}{x}
+        \end{aligned} \notag \\
+    \Rightarrow 0 = h'(0) &= \integral{a}{b}{( L_y(x, y_0(x), y_0'(x)) \phi(x) + L_p(x, y_0(x), y_0'(x)) \phi'(x) )}{x} & \label{eq:erste_var}
+\end{align}
+
+Das Integral \eqref{eq:erste_var} in der letzten Zeile nennt man die \textit{erste Variation} von $S[y]$ in Richtung $\phi$ für $y_0$.
+(In der Literatur oft mit $\delta S[y_0](\phi)$ abgekürzt)
+
+Damit lautet das Hamilton Prinzip aus Beispiel 2: Die Natur wählt unter allen stetig differenzierbaren Wegen von
+$(t_0, \alpha)$ nach $(t_1, \beta)$ denjenigen aus, für den die erste Variation \eqref{eq:erste_var} der Wirkung
+$S$ für \textit{beliebige} Funktionen $\phi$ verschwindet.
+
+Formen wir nun den Ausdruck der ersten Variation \eqref{eq:erste_var} mittels partieller Integration um:
+
+\[ h'(0) = \integral{a}{b}{\left( L_y(x, y_0, y_0')\phi - \d{}{x}(L_p(x, y_0, y_0')) \right)}{x} + L_p(x, y_0, y_0')\phi \mid_a^b \]
+\begin{equation}
+    \Rightarrow 0 = \integral{a}{b}{\left( L_y(x, y_0, y_0') - \d{}{x}(L_p(x, y_0, y_0'))\right) \phi}{x} \,\, , \forall\phi\in V_0
+    \label{eq:erste_var_umgef}
+\end{equation}
+
+Aus \eqref{eq:erste_var_umgef} folgt, dass $g(x) := L_y(x, y_0, y_0') - \d{}{x}(L_p(x, y_0, y_0')) = 0$ für alle $x\in(a, b)$ und
+zwar nach folgendem
+
+\begin{lem}[Fundamentallemma der Variationsrechnung]
+    Sei g eine auf $(a, b)$ stetige Funktion und gelte für jedes $\phi\in V_0$ dir Relation
+    $\integral{a}{b}{g(x) \phi(x)}{x} = 0$, so folgt $g \equiv 0$ auf $(a, b)$.
+\end{lem}
+
+\begin{beweis}
+Der Beweis erfolgt indirekt: Wäre $g(x_0) \neq 0$ für $x_0 \in (a, b)$. O.B.d.A sei $g(x_0) > 0$. Dann existiert $\delta > 0$,
+so dass $g(x) > 0$ für $x\in (x_0 - \delta, x_0 + \delta)$.\\
+Wir wählen nun $\phi_0\in V_0$, so dass:
+\begin{equation*}
+    \phi_0(x) =
+    \begin{cases}
+        0 & \text{für $x\in [a, b]\backslash(x_0-\delta, x_0+\delta)$}
+        \\
+        (x-(x_0-\delta))^4\,(x-(x_0+\delta))^4 & \text{für $x\in(x_0-\delta, x_0+\delta)$}
+    \end{cases}
+\end{equation*}
+Dann ist $\phi_0(x) > 0$ auf $(x_0 - \delta, x_0 + \delta)$ und
+\[ \integral{a}{b}{g \phi_0}{x} = \integral{x_0-\delta}{x_0+\delta}{g \phi_0}{x} > 0 \]
+Und das steht im Widerspruch zur Voraussetzung! \qed
+\end{beweis}
+
+\section{Zusammenfassung}
+
+\begin{thm}
+    Sei $L = L(x, y, p)$ zwei mal stetig differenzierbar bezüglich der drei Variablen x, y, p, so muss jede Lösung $y_0\in V$
+    des Variationsproblems \eqref{eq:vp} notwendigerweise die \textit{Euler-Lagrange DGL}:
+    \begin{equation}
+        L_y(x, y_0, y_0') - \d{}{x}\left(L_p(x, y_0, y_0')\right) = 0 \label{eq:elg}
+    \end{equation}
+    in $(a, b)$ erfüllen, bzw. ausgeschrieben:
+    \begin{equation*}
+        L_y(x, y_0, y_0') - L_{px}(x, y_0, y_0') - L_{py}(x, y_0, y_0')y_0' - L_{pp}(x, y_0, y_0')y_0'' = 0
+    \end{equation*}
+\end{thm}
+
+\subsection*{Bemerkungen}
+\begin{enumerate}
+    \item \eqref{eq:elg} ist gewöhnliche DGL 2. Ordnung für $y_0$. Ihre allgemeine Lösung enthält zwei Konstanten, welche
+        sich aus den Randbedingungen $y_0(a) = \alpha$, $y_0(b) = \beta$ ermitteln lassen (Randwert-Problem)
+    \item \eqref{eq:elg} ist nur eine notwendige Bedingung für die Minimalfunktion $y_0$. Hinreichende Bedingungen
+        erfordern zusätzliche Betrachtung.
+\end{enumerate}
+
+\section{Zu den Beispielen}
+
+\subsection*{Beispiel 1}
+Die Lagrangefunktion zum Beispiel 1 ist (siehe oben) $L = \sqrt{1 + p^2} \Rightarrow L_y = 0, L_p = \frac{p}{\sqrt{1+p^2}}$.
+Die Euler-Lagrange DGL \eqref{eq:elg} lautet also
+\begin{eqnarray*}
+    L_{pp} y_0'' = 0 &\Leftrightarrow& \frac{y_0''\sqrt{1+y_0'^2} - y_0' \frac{y_0' y_0''}{\sqrt{1+y_0'^2}}}{1+y_0'^2} = 0 \\
+        &\Rightarrow& y_0'' (1+(y_0')^2) - (y_0')^2 y_0'' = 0 \\
+        &\Rightarrow& y_0'' = 0
+\end{eqnarray*}
+
+$y_0$ ist eine lineare Funktion in x: $y_0(x) = \frac{\beta - \alpha}{b - a} (x - a) + \alpha$ \\
+Wie erwartet, ist die kürzeste Verbindung zweier Punkte die Gerade durch eben diese Punkte.
+
+\subsection*{Beispiel 2}
+Die Lagrangefunktion des Hamilton Prinzips (HP) lautet:
+\[ L = \frac{m}{2}p^2 - U(y), L_y = -U' = f, L_p = mp \]
+Die Euler-Lagrange DGL \eqref{eq:elg} lautet also für dieses Beispiel
+\[ 0 = L_y - \d{}{x}(L_p) = f(y)-\d{}{x}(m\dot{y}) \Rightarrow f(y) = m\ddot{y} \]
+Das Hamilton Prinzip führt uns hier auf das bekannte 2. Newtonsche Gesetz.
+
+\section*{Quellen}
+\begin{itemize}
+    \item Notizen zur Vorlesung \textit{Gewöhnliche Differentialgleichungen} von Prof. Gittel (Uni Leipzig)
+    \item H. Fischer, H. Kaul: \textit{Mathematik für Physiker}, Band 3. 2. Auflage. Teubner Verlag, Wiesbaden 2006, ISBN 978-3-8351-0031-2
+\end{itemize}
+
+% Actual content ends here
+\end{document}
