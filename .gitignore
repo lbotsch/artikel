@@ -1,5 +1,5 @@
 
-**/build/
+**/build
 articles/
 *.tar.gz
 **.swp
